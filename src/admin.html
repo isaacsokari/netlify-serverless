@@ -38,6 +38,7 @@
   }
 
   button {
+    cursor: pointer;
     background: var(--pink);
     border: 0;
     border-radius: 0.25rem;
@@ -60,6 +61,8 @@
   }
 </style>
 
+<button class="logout" id="logout">Log Out</button>
+
 <h1>Add a New Movie</h1>
 
 <div class="message"></div>
@@ -76,7 +79,27 @@
   <button type="submit">Add New Movie</button>
 </form>
 
+<script
+  type="text/javascript"
+  src="https://identity.netlify.com/v1/netlify-identity-widget.js"
+></script>
+
 <script>
+  function handleIdentityEvent(user) {
+    if (user && user.token) {
+      return;
+    }
+
+    window.location.pathname = '/login/';
+  }
+
+  window.netlifyIdentity.on('init', handleIdentityEvent);
+  window.netlifyIdentity.on('logout', handleIdentityEvent);
+
+  document.querySelector('#logout').addEventListener('click', () => {
+    window.netlifyIdentity.logout();
+  });
+
   async function handleSubmit(event) {
     event.preventDefault();
 
