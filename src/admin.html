@@ -103,10 +103,14 @@
   async function handleSubmit(event) {
     event.preventDefault();
 
+    const { access_token } = window.netlifyIdentity.currentUser().token;
     const data = new FormData(event.target);
 
     const result = await fetch('/.netlify/functions/add-movie', {
       method: 'POST',
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
       body: JSON.stringify({
         id: data.get('id'),
         title: data.get('title'),
